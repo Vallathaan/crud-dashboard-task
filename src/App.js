@@ -1,46 +1,47 @@
-import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-import Sidebar from "./Sidebar";
-import Navbar from "./Navbar";
-import Dashboard from "./Dashboard";
-import Table from "./Table";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Product from "./Product";
-import AddUser from "./AddUser";
-import AddProduct from "./AddProduct";
-import ViewUser from "./ViewUser";
-import Viewproduct from "./ViewProduct";
-import EditUser from "./EditUser";
-import EditProduct from "./EditProduct";
+import './App.css';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import { CreateUser } from './CreateUser';
+import { ListUsers } from './ListUsers';
+import { AppBar, Button, Toolbar } from '@mui/material';
+import { HomePage } from './HomePage';
+import { useState } from 'react';
 
+
+//Design an UI to implement the CRUD // CRUD - Create,Read,Update,Delete // Dashboard // List Users - /users // Create User - /create-user 
+// Edit User - /edit-user/:id // profile - /profile/:id // edit-profile – /edit-profile/:id
 
 function App() {
+
+  const [users, setUsers] = useState([{
+    name: "vallathan",
+    email: "vallathan@gmail.com",
+    phone: "9876543200"
+  },
+  {
+    name: "Ashok",
+    email: "Ashok@gmail.com",
+    phone: "987654321"
+  }
+  ]);
+
+  const navigate = useNavigate();
+
   return (
-    <BrowserRouter>
-      <div id="page-top">
-        <div id="wrapper">
-          <Sidebar />
-          <div id="content-wrapper" className="d-flex flex-column">
-            <div id="content">
-              <Navbar />
-              <div class="container-fluid">
-                <Routes>
-                  <Route path="/" element={<Dashboard />} />
-                  <Route path="/table" element={<Table />} />
-                  <Route path="/product" element={<Product />} />
-                  <Route path="/table/adduser" element={<AddUser />} />
-                  <Route path="/product/addproduct" element={<AddProduct />} />
-                  <Route path='/table/view/:id' element={<ViewUser/>}/>
-                  <Route path='/product/view/:id' element={<Viewproduct/>}/>
-                  <Route path="/table/edit/:id" element={<EditUser/>}/>
-                  <Route path="/product/edit/:id" element={<EditProduct/>}/>
-                </Routes>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </BrowserRouter>
+    <div className="App">
+      <AppBar position="static" color='error'>
+        <Toolbar>
+          <Button color="inherit" onClick={() => navigate("/")}>Home</Button>
+          <Button color="inherit" onClick={() => navigate("/users")}>Users</Button>
+          <Button color="inherit" onClick={() => navigate("/create-user")}>Create User</Button>
+        </Toolbar>
+      </AppBar>
+      <h1>User Dashboard</h1>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/users" element={<ListUsers users={users} />} />
+        <Route path="/create-user" element={<CreateUser users={users} setUsers={setUsers} />} />
+      </Routes>
+    </div>
   );
 }
 
